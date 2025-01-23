@@ -2,14 +2,30 @@
  * @Author: 秦少卫
  * @Date: 2023-06-27 12:26:41
  * @LastEditors: 秦少卫
- * @LastEditTime: 2024-07-22 10:30:53
+ * @LastEditTime: 2024-12-24 13:13:06
  * @Description: 画布区域插件
  */
 
 import { fabric } from 'fabric';
-import Editor from '../Editor';
 import { throttle } from 'lodash-es';
-type IEditor = Editor;
+import type { IEditor, IPluginTempl } from '@kuaitu/core';
+
+type IPlugin = Pick<
+  WorkspacePlugin,
+  | 'big'
+  | 'small'
+  | 'auto'
+  | 'one'
+  | 'setSize'
+  | 'getWorkspase'
+  | 'setWorkspaseBg'
+  | 'setCenterFromObject'
+>;
+
+declare module '@kuaitu/core' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface IEditor extends IPlugin {}
+}
 
 class WorkspacePlugin implements IPluginTempl {
   static pluginName = 'WorkspacePlugin';
@@ -33,7 +49,7 @@ class WorkspacePlugin implements IPluginTempl {
     this.workspace = null;
     this.init({
       width: 900,
-      height: 2000,
+      height: 1200,
     });
     this.zoomRatio = 0.85;
   }

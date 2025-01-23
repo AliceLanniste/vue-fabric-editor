@@ -1,15 +1,20 @@
 /*
  * @Author: 秦少卫
  * @Date: 2023-06-20 12:57:35
- * @LastEditors: 秦少卫
- * @LastEditTime: 2024-04-10 17:33:02
+ * @LastEditors: bigFace2019 599069310@qq.com
+ * @LastEditTime: 2024-11-03 20:38:33
  * @Description: 删除快捷键
  */
 
 import { fabric } from 'fabric';
-import Editor from '../Editor';
-type IEditor = Editor;
-// import { v4 as uuid } from 'uuid';
+import type { IEditor, IPluginTempl } from '@kuaitu/core';
+
+type IPlugin = Pick<DeleteHotKeyPlugin, 'del'>;
+
+declare module '@kuaitu/core' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface IEditor extends IPlugin {}
+}
 
 class DeleteHotKeyPlugin implements IPluginTempl {
   static pluginName = 'DeleteHotKeyPlugin';
@@ -37,7 +42,10 @@ class DeleteHotKeyPlugin implements IPluginTempl {
   contextMenu() {
     const activeObject = this.canvas.getActiveObject();
     if (activeObject) {
-      return [null, { text: '删除', hotkey: 'Ctrl+V', disabled: false, onclick: () => this.del() }];
+      return [
+        null,
+        { text: '删除', hotkey: 'Backspace', disabled: false, onclick: () => this.del() },
+      ];
     }
   }
 

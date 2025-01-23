@@ -2,14 +2,11 @@
  * @Author: 秦少卫
  * @Date: 2024-05-21 10:18:57
  * @LastEditors: 秦少卫
- * @LastEditTime: 2024-05-26 22:59:26
+ * @LastEditTime: 2024-10-07 17:35:31
  * @Description: 圆角
 -->
 <template>
-  <div
-    class="box attr-item-box"
-    v-if="mixinState.mSelectMode === 'one' && rectType.includes(mixinState.mSelectOneType)"
-  >
+  <div class="box attr-item-box" v-if="isOne && isMatchType">
     <!-- <h3>圆角</h3> -->
     <Divider plain orientation="left"><h4>圆角</h4></Divider>
     <!-- 通用属性 -->
@@ -19,7 +16,7 @@
           <Form :label-width="40" class="form-wrap">
             <FormItem :label="$t('attributes.rx_ry')">
               <Slider
-                v-model="baseAttr.rx"
+                v-model="baseAttr.roundValue"
                 :max="300"
                 @on-input="(value) => changeCommon(value)"
               ></Slider>
@@ -28,9 +25,9 @@
         </Col>
         <Col :span="6" flex="1">
           <InputNumber
-            v-model="baseAttr.rx"
-            min="0"
-            max="300"
+            v-model="baseAttr.roundValue"
+            :min="0"
+            :max="300"
             @on-change="(value) => changeCommon(value)"
           ></InputNumber>
         </Col>
@@ -44,15 +41,11 @@
 import useSelect from '@/hooks/select';
 
 const update = getCurrentInstance();
-const { mixinState, canvasEditor } = useSelect();
-
-// 矩形元素
-const rectType = ['rect'];
+const { canvasEditor, isOne, isMatchType } = useSelect(['rect']);
 
 // 属性值
 const baseAttr = reactive({
-  rx: 0,
-  ry: 0,
+  roundValue: 0,
 });
 
 // 属性获取
@@ -61,8 +54,7 @@ const getObjectAttr = (e) => {
   // 不是当前obj，跳过
   if (e && e.target && e.target !== activeObject) return;
   if (activeObject) {
-    baseAttr.rx = activeObject.get('rx');
-    baseAttr.ry = activeObject.get('ry');
+    baseAttr.roundValue = activeObject.get('roundValue');
   }
 };
 
@@ -72,6 +64,7 @@ const changeCommon = (value) => {
   if (activeObject) {
     activeObject.set('ry', value);
     activeObject.set('rx', value);
+    activeObject.set('roundValue', value);
     canvasEditor.canvas.renderAll();
   }
 };

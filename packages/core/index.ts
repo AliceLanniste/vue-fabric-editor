@@ -41,6 +41,11 @@ export { default as LockPlugin } from './plugin/LockPlugin';
 export { default as AddBaseTypePlugin } from './plugin/AddBaseTypePlugin';
 import EventType from './eventType';
 import Utils from './utils/utils';
+import CustomRect from './objects/CustomRect';
+import CustomTextbox from './objects/CustomTextbox';
+// import { extend } from 'dayjs';
 
-export { EventType, Utils };
+export { EventType, Utils, CustomRect, CustomTextbox };
 export default Editor;
+
+export * from './interface/Editor';

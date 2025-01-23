@@ -1,16 +1,21 @@
 import { fabric } from 'fabric';
-import type Editor from '../Editor';
 import { SelectMode } from '../eventType';
-// import { Ref } from 'vue';
+import type { IEditor, IPluginTempl } from '@kuaitu/core';
+import i18n from "@/language";
 
-// import { t } from '@/language/index';
-const t = (key: string) => key;
+type IPlugin = Pick<FlipPlugin, 'flip'>;
+
+declare module '@kuaitu/core' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface IEditor extends IPlugin {}
+}
+
 // import event from '@/utils/event/notifier';
 
 export default class FlipPlugin implements IPluginTempl {
   static pluginName = 'FlipPlugin';
   static apis = ['flip'];
-  constructor(public canvas: fabric.Canvas, public editor: Editor) {}
+  constructor(public canvas: fabric.Canvas, public editor: IEditor) {}
 
   flip(type: 'X' | 'Y') {
     const activeObject = this.canvas.getActiveObject();
@@ -29,12 +34,12 @@ export default class FlipPlugin implements IPluginTempl {
           hotkey: '❯',
           subitems: [
             {
-              text: t('flip.x'),
+              text: i18n.global.t('flip.x'),
               hotkey: '|',
               onclick: () => this.flip('X'),
             },
             {
-              text: t('flip.y'),
+              text: i18n.global.t('flip.y'),
               hotkey: '-',
               onclick: () => this.flip('Y'),
             },

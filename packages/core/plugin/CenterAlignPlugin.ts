@@ -1,14 +1,20 @@
 /*
  * @Author: 秦少卫
  * @Date: 2023-06-15 22:49:42
- * @LastEditors: 秦少卫
- * @LastEditTime: 2024-07-09 14:12:41
+ * @LastEditors: bigFace2019 599069310@qq.com
+ * @LastEditTime: 2024-11-03 20:39:43
  * @Description: 居中对齐插件
  */
 
 import { fabric } from 'fabric';
-import Editor from '../Editor';
-type IEditor = Editor;
+import type { IEditor, IPluginTempl } from '@kuaitu/core';
+
+type IPlugin = Pick<CenterAlignPlugin, 'centerH' | 'center' | 'position' | 'centerV'>;
+
+declare module '@kuaitu/core' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface IEditor extends IPlugin {}
+}
 
 class CenterAlignPlugin implements IPluginTempl {
   static pluginName = 'CenterAlignPlugin';
@@ -53,7 +59,7 @@ class CenterAlignPlugin implements IPluginTempl {
       return [
         {
           text: '水平垂直居中',
-          hotkey: 'Ctrl+V',
+          hotkey: '',
           disabled: false,
           onclick: () => this.position('center'),
         },
